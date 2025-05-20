@@ -13,7 +13,7 @@ A dual-agent Soft Actor-Critic (SAC) implementation under a Centralised Training
 
 ## Visual Overview
 
-![Environment Overview](https://imgur.com/8B8kpIF)  
+![Environment Overview](https://i.imgur.com/yourimagename.png)
 *Figure: Dual-robot setup manipulating a deformable object toward dynamic targets*
 
 ## Key Features
