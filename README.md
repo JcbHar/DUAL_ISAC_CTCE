@@ -28,7 +28,7 @@ A dual-agent Soft Actor-Critic (SAC) implementation under a Centralised Training
 ```text
 DUAL_ISAC_CTCE/
 +-- agents/
-|   +-- dual_sac_agent.py            # Main multi-agent SAC implementation
+|   +-- dual_sac_agent.py             # Main multi-agent SAC implementation
 +-- logs/                             # TensorBoard logs and training outputs
 +-- models/
 |   +-- rwo_robots_one_cable/         # Environment XML
