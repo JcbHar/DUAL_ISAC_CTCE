@@ -23,7 +23,7 @@ A dual-agent Soft Actor-Critic (SAC) implementation under a Centralised Training
 - Continuous control in a multi-agent setting  
 - Reward shaped via inverse kinematics or object alignment
 
-## Project Structure
+## Project Directory Structure
 
 ```text
 DUAL_ISAC_CTCE/
