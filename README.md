@@ -21,7 +21,23 @@ A dual-agent Soft Actor-Critic (SAC) implementation under a Centralised Training
 - Centralised critic with access to global observations and actions  
 - Independent actors for decentralised execution  
 - Continuous control in a multi-agent setting  
-- Reward shaped via inverse kinematics or object alignment  
+- Reward shaped via inverse kinematics or object alignment
+
+## Project Structure
+DUAL_ISAC_CTCE/
+├── agents/
+│ └── dual_sac_agent.py # Main multi-agent SAC implementation
+├── logs/
+├── models/
+│ ├── rwo_robots_one_cable/ # Environment XML
+│ ├── actor_model.py # Actor network architecture
+│ └── critic_model.py # Critic network architecture
+├── utils/
+│ └── methods.py # Utility functions
+├── wrappers/
+│ ├── multi_agent_mpe_wrapper.py # Wrapper for MPE-style environments
+│ └── multi_agent_pandas_wrapper.py # Wrapper for dual Franka Panda setup
+├── train_test.ipynb # Jupyter notebook for training/testing
 
 ## Getting Started
 
