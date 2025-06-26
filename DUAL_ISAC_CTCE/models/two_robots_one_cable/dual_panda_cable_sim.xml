@@ -238,7 +238,11 @@
     <mesh file="finger_0_02.obj"/>
     <mesh file="finger_1_02.obj"/>
 </asset>
-
+    
+<extension>
+    <plugin plugin="mujoco.elasticity.cable"/>
+</extension>
+    
 <worldbody>
 <!-- TARGETS -->
 <body name="target4" pos="-0.5 0 0.8">
@@ -262,7 +266,27 @@
     <inertial pos="0 0 0" mass="1e-12" diaginertia="1e-12 1e-12 1e-12"/>
 </body>
 
-<!-- CABLE/ROPE OBJECT -->
+<!-- FROM https://github.com/qj25/adapteddlo_muj/blob/main/adapteddlo_muj/assets/native_cable/cable.xml -->
+<body name="stiffrope" pos="0.94 0 0.845" quat="0.0 0.0 1.0 0.0">
+  <joint type="free"/>
+  <composite type="cable" curve="s" count="14 1 1" size="1.885" offset="0 0 0" initial="none">
+    <plugin plugin="mujoco.elasticity.cable">
+      <config key="twist" value="500000.0"/>
+      <config key="bend" value="1000000.0"/>
+      <config key="vmax" value="0.05"/>
+    </plugin>
+    <joint kind="main" damping="0.001"/>
+    <geom type="capsule" size="0.012" 
+      rgba=".8 .2 .1 1" 
+      condim="3" conaffinity="1" contype="1"
+      solimp="0.95 0.95 0.01"
+      solref="0.01 1"/>
+
+  </composite>
+</body>
+
+    
+<!-- CABLE/ROPE OBJECT 
 <body name="rope_root" pos="-0.94 0 0.845">
   <joint type="free" damping="0.1"/>
     <geom 
@@ -396,7 +420,7 @@
                                                                                 <body name="rope_seg395" pos="0.0459 0 0">
                                                                                 <joint type="ball" damping="0.07" stiffness="0"/>
                                                                                 <geom type="capsule" fromto="0 0 0 0.0459 0 0" size="0.012" rgba="0 0 1 1" mass="0.0005"/>
-                                                                                <body name="rope_seg40" pos="0.0459 0 0"> <!--0.0459 -->
+                                                                                <body name="rope_seg40" pos="0.0459 0 0"> <!--0.0459 
                                                                                   <joint type="ball" damping="0.07" stiffness="0"/>
                                                                                 <geom 
                                                                                   type="capsule"
@@ -451,7 +475,7 @@
     </body>
   </body>
 </body>
-
+-->
 <!-- SCENE BODY -->    
 <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
 <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>

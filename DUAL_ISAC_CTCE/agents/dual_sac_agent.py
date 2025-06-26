@@ -28,7 +28,7 @@ from models.critic_model import CriticModel
 from ray.rllib.algorithms.sac import SACConfig
 from ray.rllib.policy.policy import PolicySpec
 from ray.rllib.algorithms.callbacks import DefaultCallbacks
-from wrappers.multi_agent_mpe_wrapper import MPEMultiAgentWrapper
+#from wrappers.multi_agent_mpe_wrapper import MPEMultiAgentWrapper
 from wrappers.multi_agent_pandas_wrapper import DualPandaParallelEnv
 from ray.rllib.algorithms.callbacks import DefaultCallbacks
 from ray.rllib.policy.sample_batch import SampleBatch
@@ -172,15 +172,15 @@ class DualPandaSACAgent:
         local_logs_dir = "D:/dissertation/panda_multi_agent/logs"
         
         ray.init(ignore_reinit_error=True, num_cpus=5)
-                
+               
         results = tune.run(
             "SAC",
             config=self.config.to_dict(),
             stop={
-                "training_iteration": 1_000,
+                "training_iteration": 25,
             },
             local_dir=local_logs_dir,
-            checkpoint_freq=250,
+            checkpoint_freq=50,
             checkpoint_at_end=True,
         )
 

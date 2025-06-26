@@ -70,6 +70,8 @@ class DualPandaParallelEnv(MultiAgentEnv):
         self.max_steps = max_steps
         self.model = mujoco.MjModel.from_xml_path(model_path)
         self.data = mujoco.MjData(self.model)
+        
+        print("MuJoCo version: ", mujoco.__version__)
 
         for i in range(self.model.nu):
             name_address = self.model.name_actuatoradr[i]
@@ -291,6 +293,25 @@ class DualPandaParallelEnv(MultiAgentEnv):
         
         mujoco.mj_step(self.model, self.data)
 
+        try:
+            mujoco.mj_forward(self.model, self.data)
+            
+            rope_root_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, "stiffrope_0_0_0")
+            rope_tip_id  = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, "stiffrope_30_0_0")
+            right_finger_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, "right_finger_02")  # root
+            left_finger_id  = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, "left_finger_01")   # tip
+            
+            self.data.xpos[rope_root_id][:] = self.data.xpos[right_finger_id]
+            self.data.xquat[rope_root_id][:] = self.data.xquat[right_finger_id]
+            
+            self.data.xpos[rope_tip_id][:] = self.data.xpos[left_finger_id]
+            self.data.xquat[rope_tip_id][:] = self.data.xquat[left_finger_id]
+            
+            mujoco.mj_forward(self.model, self.data)
+        
+        except Exception as e:
+            print(f"[WARNING] Failed to sync rope ends to robot fingers: {e}")
+
         for joint_name in self.finger_joint_names:
             joint_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_JOINT, joint_name)
             qpos_index = self.model.jnt_qposadr[joint_id]
@@ -352,6 +373,26 @@ class DualPandaParallelEnv(MultiAgentEnv):
     
         mujoco.mj_resetData(self.model, self.data)
         self.current_step = 0
+
+        try:
+            mujoco.mj_forward(self.model, self.data)
+            
+            rope_root_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, "stiffrope_0_0_0")
+            rope_tip_id  = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, "stiffrope_30_0_0")
+            right_finger_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, "right_finger_02")  # root
+            left_finger_id  = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, "left_finger_01")   # tip
+            
+            self.data.xpos[rope_root_id][:] = self.data.xpos[right_finger_id]
+            self.data.xquat[rope_root_id][:] = self.data.xquat[right_finger_id]
+            
+            self.data.xpos[rope_tip_id][:] = self.data.xpos[left_finger_id]
+            self.data.xquat[rope_tip_id][:] = self.data.xquat[left_finger_id]
+            
+            mujoco.mj_forward(self.model, self.data)
+
+        except Exception as e:
+            print(f"[WARNING] Failed to sync rope ends to robot fingers: {e}")
+
 
         # INVERSE KINEMATIC
         #self.apply_hand_ik_to_rope_ends()
